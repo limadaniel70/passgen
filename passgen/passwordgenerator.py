@@ -1,5 +1,5 @@
 import random
-from passgen.config import Config
+from config import Config
 
 
 class PasswordGenerator:
@@ -16,18 +16,17 @@ class PasswordGenerator:
         chars: list[str] = []
         password: str = ""
 
+        # TODO: no momento funciona, mas deve ser mudado no futuro.
         if self.config.use_lowercase:
             chars += self.uppercase
-        elif self.config.use_uppercase:
+        if self.config.use_uppercase:
             chars += self.lowercase
-        elif self.config.use_numbers:
+        if self.config.use_numbers:
             chars += self.numbers
-        elif self.config.use_symbols:
+        if self.config.use_symbols:
             chars += self.symbols
 
-        i = 0
-        while i < self.config.password_length:
-            password += chars[random.randint(0, len(chars))]
-            i += 1
+        while self.config.password_length >= len(password):
+            password += chars[random.randint(0, len(chars) - 1)]
 
         return password
