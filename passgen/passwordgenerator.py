@@ -27,16 +27,16 @@ from config import Config
 
 class PasswordGenerator:
 
-    lowercase: list[str] = list("abcdefghijklmnopqrstuvwxyz")
-    uppercase: list[str] = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    numbers: list[str] = list("0123456789")
-    symbols: list[str] = list("!@#$%&*")
+    lowercase: str = "abcdefghijklmnopqrstuvwxyz"
+    uppercase: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    numbers: str = "0123456789"
+    symbols: str = "!@#$%&*"
 
     def __init__(self, config: Config) -> None:
         self.config = config
 
     def gen_password(self) -> str:
-        chars: list[str] = []
+        chars: str = ""
         password: str = ""
 
         # TODO: no momento funciona, mas deve ser mudado no futuro.
