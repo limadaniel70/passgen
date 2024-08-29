@@ -49,6 +49,10 @@ class PasswordGenerator:
         if self.config.use_symbols:
             chars += self.symbols
 
+        # Solução para a issue #4
+        if chars:
+            chars += self.lowercase
+
         while self.config.password_length >= len(password):
             password += chars[random.randint(0, len(chars) - 1)]
 
