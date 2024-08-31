@@ -23,8 +23,9 @@
 
 import argparse
 
-from passwordgenerator import PasswordGenerator
 from config import Config
+from passwordgenerator import PasswordGenerator
+
 
 class App:
 
