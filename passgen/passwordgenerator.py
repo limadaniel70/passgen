@@ -21,7 +21,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import random
+import secrets
+
 from config import Config
 
 
@@ -54,6 +55,6 @@ class PasswordGenerator:
             chars += self.lowercase
 
         while self.config.password_length >= len(password):
-            password += chars[random.randint(0, len(chars) - 1)]
+            password += secrets.choice(chars)
 
         return password
