@@ -22,16 +22,17 @@
 # SOFTWARE.
 
 import secrets
+import string
 
 from config import Config
 
 
 class PasswordGenerator:
 
-    lowercase: str = "abcdefghijklmnopqrstuvwxyz"
-    uppercase: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    numbers: str = "0123456789"
-    symbols: str = "!@#$%&*"
+    lowercase: str = string.ascii_lowercase
+    uppercase: str = string.ascii_uppercase
+    numbers: str = string.digits
+    symbols: str = string.punctuation
 
     def __init__(self, config: Config) -> None:
         self.config = config
