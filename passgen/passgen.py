@@ -20,56 +20,48 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import string
+import secrets
+import sys
 
-import argparse
+lowercase: str = string.ascii_lowercase
+uppercase: str = string.ascii_uppercase
+numbers: str = string.digits
+symbols: str = string.punctuation
 
-from config import Config
-from passwordgenerator import PasswordGenerator
+def gen_password(chars: str, len: int) -> str:
+    return ''.join([secrets.choice(chars) for _ in range(len)])
 
+def parser() -> tuple[str, int]:
+    chars = [lowercase, uppercase, numbers, symbols]
+    lenght = 32
+    if len(sys.argv) < 2:
+        print("Error: ")
+        sys.exit(1)
 
-class App:
+    if sys.argv[1] in ["-h", "--help"]:
+        print("Usage: ")
+        sys.exit(0)
 
-    def __init__(self) -> None:
-        self.parser = argparse.ArgumentParser(
-            prog="passgen",
-            description="A CLI password generator made with python"
-        )
-        self.parser.add_argument("-l", 
-                                "--length",
-                                type=int,
-                                dest="length",
-                                required=True,
-                                help="The password length")
-        self.parser.add_argument("--no-numbers", 
-                                action="store_false",
-                                dest="use_numbers",
-                                help="Don't use numbers")
-        self.parser.add_argument("--no-uppercase",
-                                action="store_false",
-                                dest="use_uppercase",
-                                help="Don't use uppercase")
-        self.parser.add_argument("--no-lowercase",
-                                action="store_false",
-                                dest="use_lowercase",
-                                help="Don't use lowercase")
-        self.parser.add_argument("--no-symbols",
-                                action="store_false",
-                                dest="use_symbols",
-                                help="Don't use symbols")
+    if "--no-lowercase" in sys.argv:
+        chars.remove(lowercase)
+    if "--no-uppercase" in sys.argv:
+        chars.remove(uppercase)
+    if "--no-numbers" in sys.argv:
+        chars.remove(numbers)
+    if "--no-symbols" in sys.argv:
+        chars.remove(symbols)
 
-    def run(self) -> None:
-        args = self.parser.parse_args()
-        pg: object = PasswordGenerator(Config(
-            args.length,
-            args.use_lowercase,
-            args.use_uppercase,
-            args.use_numbers,
-            args.use_symbols
-        ))
+    if not chars:
+        print("")
+        sys.exit(1)
 
-        password = pg.gen_password()
-        print(f"Generated password: {password}")
+    return (''.join(chars), lenght)
+
+def main() -> None:
+    chars, lenght = parser()
+    password = gen_password(chars, lenght)
+    print(f"Generated password: {password!r}")
 
 if __name__ == "__main__":
-    app = App()
-    app.run()
+    main()
