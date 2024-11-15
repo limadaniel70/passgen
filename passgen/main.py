@@ -1,18 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # MIT License
-# 
+#
 # Copyright (c) 2024 Daniel Lima
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,39 +29,74 @@ uppercase: str = string.ascii_uppercase
 numbers: str = string.digits
 symbols: str = string.punctuation
 
-def gen_password(chars: str, len: int) -> str:
-    return ''.join([secrets.choice(chars) for _ in range(len)])
+
+def gen_password(chars: str, length: int) -> str:
+    return "".join([secrets.choice(chars) for _ in range(length)])
+
 
 def parser() -> tuple[str, int]:
     chars = [lowercase, uppercase, numbers, symbols]
-    lenght = 32
+    length = 32
+
     if len(sys.argv) < 2:
         print("Error: ")
         sys.exit(1)
 
     if sys.argv[1] in ["-h", "--help"]:
-        print("Usage: ")
+        print("""
+Password Generator
+Usage:
+    python script.py [options]
+
+Options:
+    --no-lowercase    Exclude lowercase letters
+    --no-uppercase    Exclude uppercase letters
+    --no-numbers      Exclude numbers
+    --no-symbols      Exclude symbols
+    -l <length>       Specify the length of the password (default: 32)
+    -h, --help        Show this help message
+    """)
         sys.exit(0)
 
-    if "--no-lowercase" in sys.argv:
-        chars.remove(lowercase)
-    if "--no-uppercase" in sys.argv:
-        chars.remove(uppercase)
-    if "--no-numbers" in sys.argv:
-        chars.remove(numbers)
-    if "--no-symbols" in sys.argv:
-        chars.remove(symbols)
+    # Options
+    options = {
+        "--no-lowercase": lowercase,
+        "--no-uppercase": uppercase,
+        "--no-numbers": numbers,
+        "--no-symbols": symbols,
+    }
+    for option, char_set in options.items():
+        if option in sys.argv:
+            chars.remove(char_set)
 
-    if not chars:
-        print("")
+    # Password Lenght
+    if "-l" in sys.argv:
+        index = sys.argv.index("-l")
+        try:
+            length = int(sys.argv[index + 1])
+        except IndexError:
+            print("Error: null password lenght.")
+            sys.exit(1)
+        except ValueError:
+            print("Error: invalid password lenght.")
+            sys.exit(1)
+
+    if length <= 0:
+        print("Error: Password length must be a positive integer.")
         sys.exit(1)
 
-    return (''.join(chars), lenght)
+    if not chars:
+        print("Error: No character types selected.")
+        sys.exit(1)
+
+    return ("".join(chars), length)
+
 
 def main() -> None:
-    chars, lenght = parser()
-    password = gen_password(chars, lenght)
-    print(f"Generated password: {password!r}")
+    chars, length = parser()
+    password = gen_password(chars, length)
+    print(f"Generated password: {password}")
+
 
 if __name__ == "__main__":
     main()
