@@ -14,7 +14,7 @@ A simple and customizable command-line password generator written in Python.
 Clone the repository or copy the script locally:
 
 ```bash
-git clone https://github.com/your-username/password-generator.git
+git clone https://github.com/limadaniel70/passgen.git
 cd password-generator
 ```
 
