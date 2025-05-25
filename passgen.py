@@ -84,9 +84,9 @@ def main():
     charset, length = parse_args(args)
     psswrd = gen_password(charset, length)
     print("\n Generated Password:")
-    print("-" * (length + 4))
+    print("─" * (length + 4))
     print(f" {psswrd}")
-    print("-" * (length + 4))
+    print("─" * (length + 4))
 
 
 if __name__ == "__main__":
